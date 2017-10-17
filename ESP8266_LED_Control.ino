@@ -16,9 +16,8 @@ void setup() {
   Serial.begin(9600);
   Serial.print("\r\nstart\r\n");
 
-  for (uint8_t pin = 10; pin <= 12; pin++)
+  for (uint8_t pin = 10; pin <= 11; pin++)
     pinMode(pin, OUTPUT);
-  digitalWrite(12, HIGH);
 
   //重啟ESP8266
   ATcommand = "AT+RST";
@@ -54,10 +53,29 @@ void setup() {
   setATcommand(ATcommand, 15);
 
   Serial.print("---Initialize Successfully!---\r\n");
+  WiFiSerialClearBuffer();
 }
 
 void loop() {
+  if (WifiSerial.available()) {
+    String StrWebMsg = "", cmdAT = "";
+    uint8_t connID = 0;
 
+    WifiSerial.flush(); //等待資料傳送完
+    delay(2000);
+    while (WifiSerial.available())
+      StrWebMsg += (char)WifiSerial.read();
+
+    Serial.println(StrWebMsg);
+
+    connID = 0;
+    cmdAT = "AT+CIPCLOSE=";
+    cmdAT += connID; // 附加連線編號
+    Serial.println(setATcommand(cmdAT)); // 送出「中斷連線」命令
+
+  }
+
+  delay(50);
 }
 
 String setATcommand(String ATcmd) {
