@@ -1,0 +1,26 @@
+<html>
+	<head>
+		<title>ESP8266 LED Control</title>
+	</head>
+	<body align="center">
+		<button id="D101" class="led">LED 10 ON</button>
+		<button id="D100" class="led">LED 10 OFF</button>
+		<br><br>
+		<button id="D111" class="led">LED 11 ON</button>
+		<button id="D110" class="led">LED 11 OFF</button>
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$(".led").click(function(){
+					var p = $(this).attr('id');
+					$.get("http://192.168.1.31:9000/", {pin:p});
+				});
+			});
+		</script>
+	</body>
+</html>
+
+
+
+
