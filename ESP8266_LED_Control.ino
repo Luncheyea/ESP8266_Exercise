@@ -18,7 +18,6 @@ void setup() {
 
   for (uint8_t pin = 10; pin <= 12; pin++)
     pinMode(pin, OUTPUT);
-  digitalWrite(12, HIGH);
 
   //重啟ESP8266
   ATcommand = "AT+RST";
