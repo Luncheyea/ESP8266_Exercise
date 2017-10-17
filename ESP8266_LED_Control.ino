@@ -57,6 +57,27 @@ void setup() {
 }
 
 void loop() {
+  if (WifiSerial.available()) {
+    WifiSerial.flush();
+    if (WifiSerial.find("+IPD,")) {
+      uint8_t connectID = WifiSerial.read() - '0'; //取得連線ID，並從ASCII轉成整數
+      String StrWebMsg = "";
+      while (WifiSerial.available()) {
+        StrWebMsg += (char)WifiSerial.read();
+        delay(5);
+      }
+
+      Serial.print("connectID=");
+      Serial.println(connectID);
+      Serial.println(StrWebMsg);
+      delay(2000);
+
+      ATcommand = "AT+CIPCLOSE=" + connectID;
+      Serial.println(setATcommand(ATcommand)); // 送出「中斷連線」命令
+    }
+  }
+
+  delay(50);
 
 }
 
